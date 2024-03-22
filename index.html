@@ -5,25 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whatsapp Sender</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-    <div class="container">
-        <h1>Whatsapp Sender</h1>
-            <form action="">
-                <input type="text" name="phone" id="phone" placeholder="Phone Number">
-                <input type="text" name="message" id="message" placeholder="Message">
-                <input type="file" name="file" id="file">
-                <button type="submit">Send</button>
-            </form>
-    </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <div class="custom-container">
+              <h1 class="text-center mb-4">Whatsapp Sender</h1>
+              <form action="">
+                <div class="form-group">
+                  <label for="phone">Phone Number</label>
+                  <input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone number Ex: 19999999999">
+                </div>
+                <div class="form-group">
+                  <label for="message">Message</label>
+                  <input type="text" class="form-control" id="message" name="message" placeholder="Enter message">
+                </div>
+                <div class="form-group">
+                  <label for="file">File</label>
+                  <input type="file" class="form-control-file" id="file" name="file">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Send</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    
 </body>
 <script>
     const { Client } = require('whatsapp-web.js');
     const qrcode = require('qrcode-terminal');
-    const fs = require('fs'); // Importe o módulo fs
-    const path = require('path'); // Importe o módulo path para manipulação de caminhos
-    const { MessageMedia } = require('whatsapp-web.js'); // Importe o módulo MessageMedia
+    const fs = require('fs');
+    const path = require('path');
+    const { MessageMedia } = require('whatsapp-web.js'); 
 
     const client = new Client();
 
@@ -68,5 +85,12 @@
         });
     });
 </script>
+
+<!-- Libs for backend -->
 <script src="logica.js"></script>
+
+<!-- Libs for frontend -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </html>
