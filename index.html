@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Whatsapp Sender</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/style.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-xVePiofB0ITJTb+bHK0uTEIgOqXvpkhjK7IGqi6l9RI++urzkJcnFe5CSB5OGPvp" crossorigin="anonymous">
 </head>
@@ -15,6 +15,7 @@
           <div class="col-md-6">
             <div class="custom-container">
               <h1 class="text-center mb-4">Whatsapp Sender</h1>
+              <div id="qrcode"></div>
               <form action="">
                 <div class="form-group">
                   <label for="phone">Phone Number</label>
@@ -37,62 +38,23 @@
           </div>
         </div>
       </div>
-    
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+      <script>
+          $(document).ready(function() {
+              $.get('/qr', function(data) {
+                  let qrcode = new QRCode(document.getElementById("qrcode"), {
+                      text: data.qr,
+                      width: 128,
+                      height: 128,
+                      colorDark : "#000000",
+                      colorLight : "#ffffff",
+                      correctLevel : QRCode.CorrectLevel.H
+                  });
+              });
+          });
+      </script>
 </body>
-<script>
-    const { Client } = require('whatsapp-web.js');
-    const qrcode = require('qrcode-terminal');
-    const fs = require('fs');
-    const path = require('path');
-    const { MessageMedia } = require('whatsapp-web.js'); 
-
-    const client = new Client();
-
-    client.on('qr', (qr) => {
-        qrcode.generate(qr, {small: true});
-    });
-
-    client.on('ready', () => {
-        console.log('Client is ready!');
-    });
-
-    client.initialize();
-
-    let number = '5519971172264@c.us'; 
-    let textMessage = 'Teste com imagem';
-    let imageMessage = 'imagem.png';
-
-
-    client.on('ready', async () => {
-        console.log('Client is ready to send the message.');
-
-        // Enviar a mensagem de texto inicial
-        client.sendMessage(number, textMessage).then(async (response) => {
-            if (response.id.fromMe) {
-                console.log('Text message was successfully sent!'); // aqui funciona
-
-                try {
-                    
-                    const img = fs.readFileSync('./imagem.png', {encoding: 'base64'});
-                    const { size } = fs.statSync('./imagem.png');
-                    
-                    const msg = new MessageMedia('image/png', img ,'imagem', size);
-
-                    // Envia a mensagem com a imagem
-                    await client.sendMessage(number, msg);
-
-                    console.log('Image message was successfully sent!');
-                } catch (error) {
-                    console.error('Error sending image message:', error);
-                }
-            }
-        });
-    });
-</script>
-
-<!-- Libs for backend -->
-<script src="logica.js"></script>
-
 <!-- Libs for frontend -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
