@@ -16,34 +16,45 @@ client.on('ready', () => {
 
 client.initialize();
 
-let number = '5519971172264@c.us'; 
-let textMessage = 'Teste com imagem';
-let imageMessage = 'imagem.png';
+const numbers = ['19993679551', '19981221745', '16981218109', '19999191106', 
+                 '19996877656', '19997603010', '19991768883', '19997602293',
+                 '19997602293', '19999189791', '19989366336'];
 
+function formatNumbers(numbers) {
+    const brCode = '55';
+    const suffix = '@c.us';
+    return numbers.map((number) => {
+        return brCode + number + suffix
+    })
+}
 
 client.on('ready', async () => {
     console.log('Client is ready to send the message.');
+    
+    const formattedNumbers = formatNumbers(numbers);
+    console.log('Formatted numbers:', formattedNumbers);
 
-    // Enviar a mensagem de texto inicial
-    client.sendMessage(number, textMessage).then(async (response) => {
-        if (response.id.fromMe) {
-            console.log('Text message was successfully sent!'); // aqui funciona
-
-            try {
-                
-                const img = fs.readFileSync('./imagem.png', {encoding: 'base64'});
-                const { size } = fs.statSync('./imagem.png');
-                
-                const msg = new MessageMedia('image/png', img ,'imagem', size);
-
-                // Envia a mensagem com a imagem
-                await client.sendMessage(number, msg);
-
-                console.log('Image message was successfully sent!');
-            } catch (error) {
-                console.error('Error sending image message:', error);
-            }
+    try {
+        
+        for (const number of formattedNumbers) {
+            const textMessage = 'Vem aí na Multi Arena - Fresno tocando seus melhores sucessos!\n\n' +
+                                'Dia 10/05 no estacionamento do shopping iguatemi!\n\n' +
+                                'Link para vendas!\n' +
+                                'https://bit.ly/fresnoemcps';
+            await client.sendMessage(number, textMessage);
+            console.log('Text message was successfully sent to', number);
         }
-    });
+        
+        for (const number of formattedNumbers) {
+            const img = fs.readFileSync('./imagem.png', {encoding: 'base64'});
+            const { size } = fs.statSync('./imagem.png');
+            const msg = new MessageMedia('image/png', img ,'imagem', size);
+    
+            await client.sendMessage(number, msg);
+            console.log('Image message was successfully sent to', number);
+        }
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
 });
 
